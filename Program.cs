@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace loginRegister
 {
@@ -25,11 +26,46 @@ namespace loginRegister
                 return 0;
             }
         }
-        public static string registerMode(string register)
+        public static List<string> registerMode(string register, List<String> logins)
         {
             int index = register.IndexOf(" ");
-
-            return "yes";
+            string login = register.Substring(0, (index));
+            string password = register.Substring(index);
+            bool contain = false;
+            bool hasSpecial = false;
+            char[] special = { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',';',':'};
+            foreach (string log in logins)
+            {
+                if (login == log)
+                {
+                    contain = true;
+                    Console.WriteLine("Login zajety");
+                }
+            }
+            foreach (char letter in special)
+            {
+                if (login.Contains(letter))
+                {
+                    hasSpecial = true;
+                }
+            }
+            //checks password
+            bool hasLower;
+            bool hasUpper;
+            if ()
+            if (login.Length >= 3 && login.Length <= 12 && hasSpecial == false)
+            {
+                if (contain == false)
+                {
+                    logins.Add(login);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Blad");
+            }
+            
+            return logins;
         }
         public static string loginMode(string login)
         {
@@ -38,8 +74,8 @@ namespace loginRegister
         }
         static void Main(string[] args)
         {
-            string[] passwords = { };
-            string[] logins = { };
+            List<string> passwords = new List<string>();
+            List<string> logins = new List<string>();
             int numOfTasks;
             Console.WriteLine("Podaj tryb i ilosc polecen");
             string input = Console.ReadLine();
