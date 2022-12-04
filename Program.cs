@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace loginRegister
 {
@@ -26,46 +27,107 @@ namespace loginRegister
                 return 0;
             }
         }
-        public static List<string> registerMode(string register, List<String> logins)
+        public static List<Tuple<string>> registerMode(string register, List<Tuple<String, String>> logins)
         {
             int index = register.IndexOf(" ");
             string login = register.Substring(0, (index));
             string password = register.Substring(index);
             bool contain = false;
-            bool hasSpecial = false;
-            char[] special = { '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',';',':'};
-            foreach (string log in logins)
+            bool hasSpecialLogin = false;
+            bool hasLowerPass = false;
+            bool hasUpperPass = false;
+            bool hasSpecialPass = false;
+            bool hasNumberPass = false;
+            bool passwordValid = false;
+            bool loginValid = false;
+            byte[] asciiBytesLogin = Encoding.ASCII.GetBytes(login);
+
+            //checks if login already registered
+            foreach (Tuple<string, string> tuple in logins)
             {
-                if (login == log)
+                if (login == tuple.Item1)
                 {
                     contain = true;
                     Console.WriteLine("Login zajety");
                 }
             }
-            foreach (char letter in special)
+            //checks login
+            for (int i = 0; i < asciiBytesLogin.Length; i++)
             {
-                if (login.Contains(letter))
+                if (asciiBytesLogin[i] > 32 && asciiBytesLogin[i] < 48)
                 {
-                    hasSpecial = true;
+                    hasSpecialLogin = true;
+                }
+                if (asciiBytesLogin[i] > 57 && asciiBytesLogin[i] < 65)
+                {
+                    hasSpecialLogin = true;
+                }
+                if (asciiBytesLogin[i] > 90  && asciiBytesLogin[i] < 97)
+                {
+                    hasSpecialLogin = true;
+                }
+                if (asciiBytesLogin[i] > 122 && asciiBytesLogin[i] < 127)
+                {
+                    hasSpecialLogin = true;
                 }
             }
             //checks password
-            bool hasLower;
-            bool hasUpper;
-            if ()
-            if (login.Length >= 3 && login.Length <= 12 && hasSpecial == false)
+            byte[] asciiBytes = Encoding.ASCII.GetBytes(password);
+
+            for (int i = 0; i < asciiBytes.Length; i++)
             {
-                if (contain == false)
+                if (asciiBytes[i] > 96 && asciiBytes[i] < 123)
                 {
-                    logins.Add(login);
+                    hasLowerPass = true;
                 }
+                if (asciiBytes[i] > 64 && asciiBytes[i] < 91)
+                {
+                    hasUpperPass = true;
+                }
+                if (asciiBytes[i] > 32 && asciiBytes[i] < 48)
+                {
+                    hasSpecialPass = true;
+                }
+                if (asciiBytes[i] > 57 && asciiBytes[i] < 65)
+                {
+                    hasSpecialPass = true;
+                }
+                if (asciiBytesLogin[i] > 90 && asciiBytesLogin[i] < 97)
+                {
+                    hasSpecialPass = true;
+                }
+                if (asciiBytesLogin[i] > 122 && asciiBytesLogin[i] < 127)
+                {
+                    hasSpecialPass = true;
+                }
+                if (asciiBytesLogin[i] > 47 && asciiBytesLogin[i] < 58)
+                {
+                    hasNumberPass = true;
+
+                }
+            }
+            //check password validity
+            if (password.Length >=5 && password.Length <=15 && hasLowerPass == true && hasUpperPass == true && hasSpecialPass == true && hasNumberPass == true)
+            {
+                    passwordValid = true;
+            }
+            if (login.Length >= 3 && login.Length <= 12 && hasSpecialLogin == false)
+            {
+                    loginValid = true;
             }
             else
             {
                 Console.WriteLine("Blad");
             }
-            
-            return logins;
+            if (loginValid == true && passwordValid == true && contain == false)
+            {
+                    logins.Add(Tuple.Create(login, password));
+            }
+                else
+                {
+                    Console.WriteLine("Blad");
+                }
+            //return logins;
         }
         public static string loginMode(string login)
         {
