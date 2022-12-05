@@ -182,6 +182,9 @@ namespace loginRegister
 
         static void Main(string[] args)
         {
+            List<Tuple<string, string>> sets = new List<Tuple<string, string>>();
+            int numOfTasks;
+            string input;
             while (true == true)
             {
                 /* modes
@@ -189,10 +192,15 @@ namespace loginRegister
             1 - login
             2 - register
             */
-                List<Tuple<string, string>> sets = new List<Tuple<string, string>>();
-                int numOfTasks;
                 Console.WriteLine("Podaj tryb i ilosc polecen");
-                string input = Console.ReadLine();
+                input = Console.ReadLine();
+                if (input == "print")
+                {
+                    foreach (Tuple<string, string> tuple in sets)
+                    {
+                        Console.WriteLine(tuple);
+                    }
+                }
                 int mode = checkMode(input);
                 switch (mode)
                 {
@@ -221,7 +229,7 @@ namespace loginRegister
                         {
                             Console.WriteLine("Podaj login i haslo");
                             string dane = Console.ReadLine();
-                            registerMode(dane, sets);
+                            sets.Add(registerMode(dane, sets));
                         }
                         break;
                     default:
@@ -229,8 +237,6 @@ namespace loginRegister
                         break;
                 }
             }
-            
-            //Console.WriteLine(mode);
         }
     }
 }
