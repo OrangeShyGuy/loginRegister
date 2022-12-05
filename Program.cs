@@ -107,7 +107,7 @@ namespace loginRegister
             return loginValid;
         }
 
-        public static List<Tuple<string>> registerMode(string register, List<Tuple<String, String>> logins)
+        public static Tuple<string,string> registerMode(string register, List<Tuple<string, string>> logins)
         {
             int index = register.IndexOf(" ");
             string login = register.Substring(0, (index));
@@ -126,13 +126,13 @@ namespace loginRegister
             }
             if (loginValid == true && passwordValid == true && contain == false)
             {
-                    logins.Add(login);
+                return Tuple.Create(login, password);
             }
-                else
-                {
-                    Console.WriteLine("Blad");
-                }
-            //return logins;
+            else
+            {
+                Console.WriteLine("Blad");
+            }
+            return Tuple.Create(" "," ");
         }
         public static string loginMode(string login)
         {
@@ -141,8 +141,7 @@ namespace loginRegister
         }
         static void Main(string[] args)
         {
-            List<string> passwords = new List<string>();
-            List<string> logins = new List<string>();
+            List<string> sets = new List<string>();
             int numOfTasks;
             Console.WriteLine("Podaj tryb i ilosc polecen");
             string input = Console.ReadLine();
