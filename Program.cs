@@ -109,6 +109,7 @@ namespace loginRegister
 
         public static Tuple<string,string> registerMode(string register, List<Tuple<string, string>> logins)
         {
+            //register mode responsible for registering new users into database and checking if they are already in system
             int index = register.IndexOf(" ");
             string login = register.Substring(0, (index));
             string password = register.Substring(index);
@@ -124,8 +125,11 @@ namespace loginRegister
                     Console.WriteLine("Login zajety");
                 }
             }
+
+            //if login and password are valid and not in database create tuple with login + password
             if (loginValid == true && passwordValid == true && contain == false)
             {
+                Console.WriteLine("Zarejestrowano");
                 return Tuple.Create(login, password);
             }
             else
@@ -134,11 +138,45 @@ namespace loginRegister
             }
             return Tuple.Create(" "," ");
         }
-        public static string loginMode(string login)
+        public static int loginMode(string input, List<Tuple<string, string>> sets)
         {
-
-            return "yes";
+            /*
+             0 - user not found
+             1 - wrong password
+             2 - logged in
+            */
+            int i = 0;
+            int index = input.IndexOf(" ");
+            int setIndex;
+            string login = input.Substring(0, (index));
+            string password = input.Substring(index);
+            //checks if login exists in database
+            foreach (var item in sets)
+            {
+                if (login == item.Item1)
+                {
+                    setIndex = i;
+                    break;
+                }
+                i++;
+            }
+            if (password == sets[i].Item2)
+            {
+                Console.WriteLine("Zalogowano");
+                return 2;
+            }
+            else if ((i) == sets.Count)
+            {
+                Console.WriteLine("Konto nie istnieje");
+                return 0;
+            }
+            else
+            {
+                Console.WriteLine("Zle haslo");
+                return 1;
+            }
         }
+
         static void Main(string[] args)
         {
             List<string> sets = new List<string>();
