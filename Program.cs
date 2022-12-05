@@ -27,6 +27,7 @@ namespace loginRegister
                 return 0;
             }
         }
+
         public static bool checkPasswordValid(string password)
         {
             //checks password validity if it adheres to the requirements - at least 1: uppercase, lowercase, number, symbol and length 5-15 char
@@ -74,6 +75,7 @@ namespace loginRegister
             }
             return passwordValid;
         }
+
         public static bool checkLoginValid(string login)
         {
             //checks if login adheres to requirements - no special chars and length 3-12 char
@@ -138,6 +140,7 @@ namespace loginRegister
             }
             return Tuple.Create(" "," ");
         }
+
         public static int loginMode(string input, List<Tuple<string, string>> sets)
         {
             /*
@@ -147,7 +150,7 @@ namespace loginRegister
             */
             int i = 0;
             int index = input.IndexOf(" ");
-            int setIndex;
+            int setIndex = 0;
             string login = input.Substring(0, (index));
             string password = input.Substring(index);
             //checks if login exists in database
@@ -160,7 +163,7 @@ namespace loginRegister
                 }
                 i++;
             }
-            if (password == sets[i].Item2)
+            if (password == sets[setIndex].Item2)
             {
                 Console.WriteLine("Zalogowano");
                 return 2;
@@ -179,28 +182,54 @@ namespace loginRegister
 
         static void Main(string[] args)
         {
-            List<string> sets = new List<string>();
-            int numOfTasks;
-            Console.WriteLine("Podaj tryb i ilosc polecen");
-            string input = Console.ReadLine();
-            int mode = checkMode(input);
-            switch (mode)
+            while (true == true)
             {
-                case 0:
-                    Console.WriteLine("Blad polecenia");
-                    break;
-                case 1:
-                    numOfTasks = Convert.ToInt32(input.Substring(6));
-                    Console.WriteLine(numOfTasks);
-                    break;
-                case 2:
-                    numOfTasks = Convert.ToInt32(input.Substring(9));
-                    Console.WriteLine(numOfTasks);
-                    break;
-                default:
-                    Console.WriteLine("Invalid mode");
-                    break;
+                /* modes
+            0 - invalid
+            1 - login
+            2 - register
+            */
+                List<Tuple<string, string>> sets = new List<Tuple<string, string>>();
+                int numOfTasks;
+                Console.WriteLine("Podaj tryb i ilosc polecen");
+                string input = Console.ReadLine();
+                int mode = checkMode(input);
+                switch (mode)
+                {
+                    case 0:
+                        Console.WriteLine("Blad polecenia");
+                        break;
+                    case 1:
+                        numOfTasks = Convert.ToInt32(input.Substring(6));
+                        if (sets.Count == 0)
+                        {
+                            Console.WriteLine("Brak zapisanych zestawow");
+                        }
+                        else
+                        {
+                            for (int i = 0; i < numOfTasks; i++)
+                            {
+                                Console.WriteLine("Podaj login i haslo");
+                                string dane = Console.ReadLine();
+                                loginMode(dane, sets);
+                            }
+                        }
+                        break;
+                    case 2:
+                        numOfTasks = Convert.ToInt32(input.Substring(9));
+                        for (int i = 0; i < numOfTasks; i++)
+                        {
+                            Console.WriteLine("Podaj login i haslo");
+                            string dane = Console.ReadLine();
+                            registerMode(dane, sets);
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Invalid mode");
+                        break;
+                }
             }
+            
             //Console.WriteLine(mode);
         }
     }
