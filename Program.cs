@@ -201,6 +201,10 @@ namespace loginRegister
                         Console.WriteLine(tuple);
                     }
                 }
+                if (input == "stop")
+                {
+                    break;
+                }
                 int mode = checkMode(input);
                 switch (mode)
                 {
