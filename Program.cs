@@ -136,7 +136,10 @@ namespace loginRegister
             }
             else
             {
-                Console.WriteLine("Blad");
+                if (contain == false)
+                {
+                    Console.WriteLine("Blad");
+                }
             }
             return Tuple.Create(" "," ");
         }
